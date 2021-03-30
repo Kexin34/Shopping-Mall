@@ -12,6 +12,14 @@ spring:
           predicates:
             - Query=url,qq
 
+        - id: admin_route
+          uri: lb://renren-fast   # lb是指load balancer负载均衡
+          predicates:
+            - Path=/api/**
+          filters:  # 这段过滤器和验证码有关，api内容缓存了/renren-fast，还得注意/renren-fast也注册到nacos中
+            - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
+
+
 #        - id: product_route
 #          uri: lb://gulimall-product
 #          predicates:
@@ -40,16 +48,10 @@ spring:
 #          filters:
 #            - RewritePath=/api/(?<segment>.*),/$\{segment}
 #
-#        - id: admin_route
-#          uri: lb://renren-fast
-#          predicates:
-#            - Path=/api/**
-#          filters:  # 这段过滤器和验证码有关，api内容缓存了/renren-fast，还得注意/renren-fast也注册到nacos中
-#            - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
-#
 
 
-  ## 前端项目，/api前缀。开来到网关后断言先匹配到，过滤器修改url，比如跳转到renren微服务，所以要注意renren后端项目也注册到 nacos里
-## http://localhost:88/api/captcha.jpg   http://localhost:8080/renren-fast/captcha.jpg
+
+  ## 前端项目，都带上/api前缀。开来到网关后断言先匹配到，过滤器修改url，比如跳转到renren微服务，所以要注意renren后端项目也注册到 nacos里
+## http://localhost:88/api/captcha.jpg（进入网关时的地址）   http://localhost:8080/renren-fast/captcha.jpg（真正能访问验证码）
 ## http://localhost:88/api/product/category/list/tree http://localhost:10000/product/category/list/tree
 

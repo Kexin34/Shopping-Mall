@@ -1,10 +1,13 @@
 package com.kexin.mall.product.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -56,5 +59,11 @@ public class CategoryEntity implements Serializable {
 	 * 商品数量
 	 */
 	private Integer productCount;
+
+	/**
+	 * 包含其所有子分类, （不是数据表里面的相关属性，需要注解）
+	 */
+	@TableField(exist = false)
+	private List<CategoryEntity> children;
 
 }
