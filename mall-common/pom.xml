@@ -67,11 +67,17 @@
             <version>5.2.3.RELEASE</version>
             <scope>compile</scope>
         </dependency>
-
+        <!--服务的注册/发现-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
+        <!--nacos作为配置中心，做配置管理-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
 
 
     </dependencies>

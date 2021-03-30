@@ -5,6 +5,8 @@ import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,7 @@ import com.kexin.common.utils.R;
  * @email kexinwen.ca@gmail.com
  * @date 2021-03-28 18:44:16
  */
+@RefreshScope   // 动态刷新
 @RestController
 @RequestMapping("coupon/coupon")
 public class CouponController {
@@ -39,6 +42,17 @@ public class CouponController {
         couponEntity.setCouponName("满100-10");//优惠券的名字
         return R.ok().put("coupons",Arrays.asList(couponEntity));
     }
+    // 测试配置中心
+    @Value("${coupon.user.name}")//从application.properties中获取//不要写user.name，他是环境里的变量
+    private String name;
+    @Value("${coupon.user.age}")
+    private Integer age;
+    @RequestMapping("/test")
+    public R test(){
+        return R.ok().put("name",name).put("age",age);
+    }
+
+
 
 
 
