@@ -15,7 +15,7 @@ class MallProductApplicationTests {
     void contextLoads() {
         BrandEntity brandEntity = new BrandEntity();
         brandEntity.setBrandId(6L);
-        brandEntity.setDescript("修改");
+        brandEntity.setDescript("修1改");
         brandService.updateById(brandEntity);
     }
 }
