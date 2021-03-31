@@ -3,6 +3,7 @@ package com.kexin.mall.product;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /*
  * 1、整合Mybatis-Plus
@@ -14,7 +15,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *      2、配置Mybatis-Plus相关信息
  *          1、使用@MapperScan扫描包
  *          2、告诉MyBatis-Plus，sql映射文件（mapper的xml）的位置
+ *
+ * 2、逻辑删除
  */
+@EnableDiscoveryClient
 @MapperScan("com.kexin.mall.product.dao")
 @SpringBootApplication
 public class MallProductApplication {

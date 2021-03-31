@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848  #这个是nacos本机注册地址
+    alicloud:
+      access-key: LTAI5tGhayiaY4GdRAjJtBfG
+      secret-key: SJ4jfvxVNSZ6ryXDWHE21IWalMWIde
+      oss:
+        endpoint: oss-us-east-1.aliyuncs.com
+        bucket: kexin-mall
+  application:
+    name: mall-third-party
+
+
+server:
+  port: 30000
+
+logging:
+  level:
+    com.kexin.mall.product: debug
+
+
+

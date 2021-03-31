@@ -8,8 +8,14 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848  #这个是nacos本机注册地址
+    alicloud:
+      access-key: LTAI5tGhayiaY4GdRAjJtBfG
+      secret-key: SJ4jfvxVNSZ6ryXDWHE21IWalMWIde
+      oss:
+        endpoint: oss-us-east-1.aliyuncs.com
+
   application:
-    name: mall-member
+    name: mall-product
 
 # MapperScan
 # sql映射文件位置
@@ -18,7 +24,15 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
 
 server:
   port: 10001
+
+logging:
+  level:
+    com.kexin.mall: debug
+
+
 

@@ -1,10 +1,15 @@
 package com.kexin.mall.product.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.kexin.common.valid.AddGroup;
+import com.kexin.common.valid.UpdateGroup;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +21,7 @@ import com.kexin.mall.product.service.BrandService;
 import com.kexin.common.utils.PageUtils;
 import com.kexin.common.utils.R;
 
+import javax.validation.Valid;
 
 
 /**
@@ -59,18 +65,36 @@ public class BrandController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:brand:save")
-    public R save(@RequestBody BrandEntity brand){
-		brandService.save(brand);
+    public R save(@Validated({AddGroup.class}) @RequestBody BrandEntity brand){
+        brandService.save(brand);
 
         return R.ok();
     }
+//    public R save(@Valid @RequestBody BrandEntity brand, BindingResult result){// 手动处理异常
+//        if(result.hasErrors()){
+//            Map<String,String> map=new HashMap<>();
+//
+//            // 1、获取校验的错误结果
+//            result.getFieldErrors().forEach((item)->{
+//                //获取发生错误时的提示消息message
+//                String message = item.getDefaultMessage();
+//                //获取发生错误的字段
+//                String field = item.getField();
+//                map.put(field, message);
+//            });
+//            return R.error(400,"提交的数据不合法").put("data",map);
+//        }else{
+//            brandService.save(brand);
+//        }
+//        return R.ok();
+//    }
 
     /**
      * 修改
      */
     @RequestMapping("/update")
     //@RequiresPermissions("product:brand:update")
-    public R update(@RequestBody BrandEntity brand){
+    public R update(@Validated({UpdateGroup.class}) @RequestBody BrandEntity brand){
 		brandService.updateById(brand);
 
         return R.ok();
