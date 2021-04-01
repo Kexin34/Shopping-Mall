@@ -1,16 +1,16 @@
 package com.kexin.mall.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.kexin.mall.product.entity.AttrEntity;
+import com.kexin.mall.product.service.AttrService;
 import com.kexin.mall.product.service.CategoryService;
+import com.kexin.mall.product.vo.AttrGroupRelationVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.kexin.mall.product.entity.AttrGroupEntity;
 import com.kexin.mall.product.service.AttrGroupService;
@@ -33,6 +33,9 @@ public class AttrGroupController {
     private AttrGroupService attrGroupService;
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    AttrService attrService;
 
     /**
      * 列表
@@ -94,5 +97,24 @@ public class AttrGroupController {
 
         return R.ok();
     }
+
+
+
+    @GetMapping ("/{attrgroupId}/attr/relation")
+    public R attrRelation(@PathVariable("attrgroupId") Long attrgroupId) {
+        // 获取到当前分组 关联的所有属性
+        List<AttrEntity> attrEntities= attrService.getRelationAttr(attrgroupId);
+        return R.ok().put("data", attrEntities);
+    }
+
+    ///product/attrgroup/attr/relation/delete
+    @PostMapping("attr/relation/delete")
+    public R deleteRelation(@RequestBody AttrGroupRelationVo[] vos) {
+        attrService.deleteRelation(vos);
+        return R.ok();
+    }
+
+
+
 
 }
