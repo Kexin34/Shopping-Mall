@@ -7,7 +7,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.kexin.common.valid.AddGroup;
+import com.kexin.common.valid.ListValue;
 import com.kexin.common.valid.UpdateGroup;
+import com.kexin.common.valid.UpdateStatusGroup;
 import lombok.Data;
 
 import javax.validation.constraints.*;
@@ -34,7 +36,7 @@ public class BrandEntity implements Serializable {
 	/**
 	 * 品牌名
 	 */
-	@NotBlank(message = "Brand name is required", groups = {AddGroup.class, UpdateGroup.class})
+	@NotBlank(message = "Brand name is required", groups = {AddGroup.class})
 	private String name;
 	/**
 	 * 品牌logo地址
@@ -49,12 +51,14 @@ public class BrandEntity implements Serializable {
 	/**
 	 * 显示状态[0-不显示；1-显示]
 	 */
+	@NotNull(groups = {AddGroup.class, UpdateStatusGroup.class})
+	@ListValue(vals = {0,1}, groups = {AddGroup.class, UpdateGroup.class, UpdateStatusGroup.class})
 	private Integer showStatus;
 	/**
 	 * 检索首字母
 	 */
 	@NotEmpty
-	@Pattern(regexp = "/^[a-zA-Z]$/", message = "检索首字母必须是一个字母")
+	@Pattern(regexp = "^[a-zA-Z]$", message = "检索首字母必须是一个字母")
 	private String firstLetter;
 	/**
 	 * 排序
