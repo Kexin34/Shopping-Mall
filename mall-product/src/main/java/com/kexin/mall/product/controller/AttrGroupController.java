@@ -10,6 +10,7 @@ import com.kexin.mall.product.service.AttrAttrgroupRelationService;
 import com.kexin.mall.product.service.AttrService;
 import com.kexin.mall.product.service.CategoryService;
 import com.kexin.mall.product.vo.AttrGroupRelationVo;
+import com.kexin.mall.product.vo.AttrGroupWithAttrsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -137,5 +138,16 @@ public class AttrGroupController {
     }
 
 
+    /**
+     * 获取当前分类下的所有属性分组，而且还要带上它们所有的属性
+     * /product/attrgroup/{catelogId}/withattr
+     */
+    @GetMapping("/{catelogId}/withattr")
+    public R getAttrgroupWithAttrs(@PathVariable("catelogId") Long catelogId) {
+        // 1、查出当前分类下的所有属性分组(用三级id来查出）
+        // 2、查出每个属性分组的所有属性
+        List<AttrGroupWithAttrsVo> vos = attrGroupService.getAttrgroupWithAttrsByCatelogId(catelogId);
+        return R.ok().put("data", vos);
+    }
 
 }
