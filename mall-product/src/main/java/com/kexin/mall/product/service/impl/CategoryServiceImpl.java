@@ -3,9 +3,7 @@ package com.kexin.mall.product.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -17,6 +15,8 @@ import com.kexin.common.utils.Query;
 import com.kexin.mall.product.dao.CategoryDao;
 import com.kexin.mall.product.entity.CategoryEntity;
 import com.kexin.mall.product.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 
 @Service("categoryService")
@@ -24,6 +24,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
 //    @Autowired
 //    CategoryDao categoryDao;
+
+    @Autowired
+    private CategoryBrandRelationServiceImpl categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -64,6 +67,44 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         // 逻辑删除（非物理删除，只是改变数据库字段show_status）
         baseMapper.deleteBatchIds(asList);
     }
+
+    @Override
+    public Long[] findCateLogPath(Long catelogId) {
+        List<Long> paths = new ArrayList<>();
+        paths = findParentPath(catelogId, paths);
+
+        // 收集的时候是顺序 前端是逆序显示的 所以用集合工具类给它逆序一下
+        Collections.reverse(paths);
+        return paths.toArray(new Long[paths.size()]);
+    }
+
+    /**
+     * 级联更新所有关联的数据
+     * @param category
+     */
+    @Transactional  //因为涉及到多次修改，因此要开启事务
+    @Override
+    //@CacheEvict(value = {"category"},allEntries = true)
+    public void updateCascade(CategoryEntity category) {
+        this.updateById(category); // 更新自己
+        if (!StringUtils.isEmpty(category.getName())) { // 更新关联表里面的
+            categoryBrandRelationService.updateCategory(category.getCatId(),category.getName());
+        }
+    }
+
+    /**
+     * 递归收集所有父节点
+     */
+    private List<Long> findParentPath(Long catlogId, List<Long> paths) {
+        // 1、收集当前节点id
+        paths.add(catlogId);
+        CategoryEntity byId = this.getById(catlogId);
+        if (byId.getParentCid() != 0) {
+            findParentPath(byId.getParentCid(), paths);
+        }
+        return paths;
+    }
+
 
     /**
      * 递归查找当前菜单的子菜单

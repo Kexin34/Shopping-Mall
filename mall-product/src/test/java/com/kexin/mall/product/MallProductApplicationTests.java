@@ -2,6 +2,8 @@ package com.kexin.mall.product;
 
 import com.kexin.mall.product.entity.BrandEntity;
 import com.kexin.mall.product.service.BrandService;
+import com.kexin.mall.product.service.CategoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,15 +11,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 //@RunWith(SpringRunner.class)
+@Slf4j
 @SpringBootTest
 class MallProductApplicationTests {
     @Autowired
     BrandService brandService;
 
+    @Autowired
+    CategoryService categoryService;
+
 //    @Autowired
 //    OSSClient ossClient;
+    @Test
+    public void testFindPath(){
+        Long[] categoryPath= categoryService.findCateLogPath(225L);
+        log.info("完整路径：{}", Arrays.asList(categoryPath));
+    }
 
     @Test
     void contextLoads() {

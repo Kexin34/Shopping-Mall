@@ -11,8 +11,10 @@ import com.kexin.common.valid.ListValue;
 import com.kexin.common.valid.UpdateGroup;
 import com.kexin.common.valid.UpdateStatusGroup;
 import lombok.Data;
+//import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.*;
+//import javax.validation.constraints.;
 
 /**
  * 品牌
