@@ -6,6 +6,7 @@ import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.kexin.mall.product.entity.AttrEntity;
+import com.kexin.mall.product.service.AttrAttrgroupRelationService;
 import com.kexin.mall.product.service.AttrService;
 import com.kexin.mall.product.service.CategoryService;
 import com.kexin.mall.product.vo.AttrGroupRelationVo;
@@ -36,6 +37,9 @@ public class AttrGroupController {
 
     @Autowired
     AttrService attrService;
+
+    @Autowired
+    AttrAttrgroupRelationService relationService;
 
     /**
      * 列表
@@ -107,6 +111,17 @@ public class AttrGroupController {
         return R.ok().put("data", attrEntities);
     }
 
+    @GetMapping ("/{attrgroupId}/noattr/relation")
+    public R attrNoRelation(@PathVariable("attrgroupId") Long attrgroupId,
+                            @RequestParam Map<String, Object> params) {
+        // 返回分页数据
+        PageUtils page = attrService.getNoRelationAttr(params, attrgroupId);
+        return R.ok().put("page", page);
+    }
+
+
+
+
     ///product/attrgroup/attr/relation/delete
     @PostMapping("attr/relation/delete")
     public R deleteRelation(@RequestBody AttrGroupRelationVo[] vos) {
@@ -114,6 +129,12 @@ public class AttrGroupController {
         return R.ok();
     }
 
+    // 新增关联关系
+    @PostMapping("/attr/relation")
+    public R addRelation(@RequestBody List<AttrGroupRelationVo> vos){
+        relationService.saveBatch(vos);
+        return R.ok();
+    }
 
 
 
